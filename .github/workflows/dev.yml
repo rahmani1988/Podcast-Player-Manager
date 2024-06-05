@@ -4,10 +4,10 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push event to any branch
+  # Triggers the workflow on push event to any branch except from feature branches
   push:
-    branches:
-      - 'master'
+    branches-ignore:
+      - 'feature/**'
   # Triggers the workflow on pull request events but only for the "master" branch
   pull_request:
     branches: [ "master" ]
@@ -36,3 +36,19 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+  test:
+    runs-on: ubuntu-latest
+    steps: #1
+      - name: Run a log message #2
+        run: echo This is my job for running tests! #3
+
+      - uses: actions/checkout@v2
+
+      - name: set up JDK #2
+        uses: actions/setup-java@v1 #3
+        with:
+          java-version: 11 #4
+
+      - name: Unit tests
+        run: ./gradlew test
